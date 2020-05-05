@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+    <head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></head>
+    <body>
+        <div class="container">
+<!--            <img src="/static/img/images/100000.jpg" width="300px">-->
+            <h1>Upload image</h1>
+            <form method="POST" enctype="multipart/form-data">
+                <input type="file" name="query_img"><br>
+                <input type="submit">
+            </form>
+
+            {% if upload_path %}
+            <h2>Uploaded:</h2>
+            <img src="{{ upload_path }}" width="300px">
+            {% endif %}
+        </div>
+    </body>
+</html>
+
+
