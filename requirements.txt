@@ -7,3 +7,4 @@ Keras-Preprocessing>=1.1.0
 elasticsearch>=7.0.0
 tensorflow>=2.0.0
 tensorflow-estimator>=2.0.1
+elasticsearch-dsl

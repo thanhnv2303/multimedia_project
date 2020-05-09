@@ -1,4 +1,6 @@
 from elasticsearch import Elasticsearch, ConflictError, NotFoundError
+from elasticsearch_dsl import Search
+from elasticsearch_dsl import A
 
 from app.configuration.config import ElasticSearchConfig
 import uuid
@@ -45,6 +47,23 @@ def get_image_by_name(name):
     except IndexError:
         print("images not found")
 
+def get_image_by_label(label):
+    query = {
+        "query": {
+            "match_phrase": {
+                "label": label
+            }
+        }
+    }
+    try:
+        res = es.search(index=ElasticSearchConfig.INDEX_IMAGE, body=query)
+        imgs = []
+        for i in res['hits']['hits']:
+            imgs.append(i['_source'])
+        return imgs
+    # if not found res will not contain ['hits']['hits'][0]['_source']
+    except IndexError:
+        print("images not found")
 
 def get_image():
     query = {
@@ -59,8 +78,25 @@ def get_image():
     except IndexError:
         print("have no image")
 
+
+def get_label():
+    try:
+        imgs = get_image()
+        labels = set()
+        for img in imgs:
+
+            labels.add(img['_source']['label'])
+
+        return labels
+    # if not found res will not contain ['hits']['hits'][0]['_source']
+    except IndexError:
+        print("have no image")
+
+
 # es.indices.delete(index=ElasticSearchConfig.INDEX_IMAGE, ignore=[400, 404])
 # example:
-# for i in get_image():
-#     print(i['_source']['name'])
+
+# for i in get_label():
+#     print(i)
 # print(get_image_by_name('100000.jpg'))
+# print(get_image_by_label("general"))

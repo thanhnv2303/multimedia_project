@@ -34,6 +34,19 @@ def home():
     return render_template('home.html', images=images)
 
 
+@index_api.route("/album", methods=['GET', 'POST'])
+def album():
+    if request.method == 'POST':
+        label = request.form['label']
+        imgs = get_image_by_label(label)
+        for img in imgs:
+            img['name'] = '/static_img/images/' + img['name']
+        print(imgs)
+        return render_template('album.html', labels=get_label(), label=label, images=imgs)
+    else:
+        return render_template('album.html', labels=get_label())
+
+
 @index_api.route("/upload", methods=['GET', 'POST'])
 def upload_img():
     if request.method == 'POST':

@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1>Your album</h1>
+    <h2>Categories:</h2>
+    <div style="display: flex;">
+        {% for label in labels %}
+        <form method="POST" enctype="multipart/form-data" style="float: left; margin-right: 20px; margin-bottom: 20px;">
+            <input type="text" name="label" value="{{ label}}" readonly="readonly"><br>
+            <input type="submit">
+        </form>
+        {% endfor %}
+    </div>
+
+     <div>
+        {% if label %}
+        <h2>Photos in {{ label }}:</h2>
+        {% endif %}
+        {% if images %}
+        {% for img in images %}
+        <figure style="float: left; margin-right: 20px; margin-bottom: 20px;">
+            <img src="{{ img['name'] }}" height="200px">
+            <figcaption>{{ img['caption'] }}</figcaption>
+        </figure>
+        {% endfor %}
+        {% endif %}
+    </div>
+
+</div>
+</body>
+</html>
+
+
