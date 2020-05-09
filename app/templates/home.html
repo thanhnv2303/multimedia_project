@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1>Wellcome to your photos</h1>
+
+    {% if images %}
+    <h2>All your photos:</h2>
+    {% for i in images %}
+    <figure style="float: left; margin-right: 20px; margin-bottom: 20px;">
+        <img src="{{ i[0] }}" height="200px">
+        <figcaption>description:{{ i[1] }}</figcaption>
+    </figure>
+    {% endfor %}
+    {% else %}
+    <h2>your haven't had any image </h2>
+    {% endif %}
+</div>
+</body>
+</html>
+
+

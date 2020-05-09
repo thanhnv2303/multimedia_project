@@ -7,11 +7,11 @@ es = Elasticsearch(
     [{'host': ElasticSearchConfig.ELASTICSEARCH_IP_ADDRESS, 'port': ElasticSearchConfig.ELASTICSEARCH_PORT}])
 
 
-def save_img(name, label, discription):
+def save_img(name, label, caption):
     img = {
         'name': name,
         'label': label,
-        'discription': discription
+        'caption': caption
     }
     try:
         res = es.index(index=ElasticSearchConfig.INDEX_IMAGE, id=uuid.uuid1(), body=img)
@@ -62,5 +62,5 @@ def get_image():
 # es.indices.delete(index=ElasticSearchConfig.INDEX_IMAGE, ignore=[400, 404])
 # example:
 # for i in get_image():
-#     print(i['_source'])
+#     print(i['_source']['name'])
 # print(get_image_by_name('100000.jpg'))
