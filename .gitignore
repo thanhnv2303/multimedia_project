@@ -1,5 +1,5 @@
 .idea
 venv
 app/static/features/VGG16/*
-app/static/features/images/*
-app/static/features/uploaded/*
+app/static/features/images/*.jpg
+app/static/features/uploaded/*.jpg
