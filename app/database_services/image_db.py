@@ -47,6 +47,7 @@ def get_image_by_name(name):
     except IndexError:
         print("images not found")
 
+
 def get_image_by_label(label):
     query = {
         "query": {
@@ -64,6 +65,7 @@ def get_image_by_label(label):
     # if not found res will not contain ['hits']['hits'][0]['_source']
     except IndexError:
         print("images not found")
+
 
 def get_image():
     query = {
@@ -84,7 +86,6 @@ def get_label():
         imgs = get_image()
         labels = set()
         for img in imgs:
-
             labels.add(img['_source']['label'])
 
         return labels
@@ -93,6 +94,27 @@ def get_label():
         print("have no image")
 
 
+def fulltext_search(text):
+    query = {
+        "query": {
+            "multi_match": {
+                "query": text,
+                "fields": ["label", "caption"]
+            }
+        }
+    }
+    try:
+        res = es.search(index=ElasticSearchConfig.INDEX_IMAGE, body=query)
+        imgs=[]
+        for img in res['hits']['hits']:
+            imgs.append(img["_source"])
+        return imgs
+    # if not found res will not contain ['hits']['hits'][0]['_source']
+    except IndexError:
+        print("have no image")
+
+
+print(fulltext_search('good'))
 # es.indices.delete(index=ElasticSearchConfig.INDEX_IMAGE, ignore=[400, 404])
 # example:
 

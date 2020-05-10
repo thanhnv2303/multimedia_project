@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+    <head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></head>
+    <body>
+        <div class="container">
+            <h1>Simple image search engine</h1>
+            <form method="POST" enctype="multipart/form-data">
+                <input type="text" name="query_text"><br>
+                <input type="submit">
+            </form>
+
+            {% if images %}
+            <h2>Results:</h2>
+            {% for image in images %}
+            <figure style="float: left; margin-right: 20px; margin-bottom: 20px;">
+                <img src="{{ image['name'] }}" height="200px">
+                <figcaption>{{ image['caption'] }}</figcaption>
+            </figure>
+            {% endfor %}
+            {% else %}
+            <h2>Have no image</h2>
+            {% endif %}
+        </div>
+    </body>
+</html>
+
+

@@ -41,7 +41,7 @@ def album():
         imgs = get_image_by_label(label)
         for img in imgs:
             img['name'] = '/static_img/images/' + img['name']
-        print(imgs)
+
         return render_template('album.html', labels=get_label(), label=label, images=imgs)
     else:
         return render_template('album.html', labels=get_label())
@@ -92,3 +92,17 @@ def search_by_img():
                                scores=scores)
     else:
         return render_template('search.html')
+
+
+@index_api.route("/search/byText", methods=['GET', 'POST'])
+def search_by_text():
+    if request.method == 'POST':
+        text = request.form['query_text']
+
+        imgs = fulltext_search(text)
+        for img in imgs:
+            img['name'] = '/static_img/images/' + img['name']
+        return render_template('search_text.html',
+                               images=imgs)
+    else:
+        return render_template('search_text.html')
