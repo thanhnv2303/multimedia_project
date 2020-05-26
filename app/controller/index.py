@@ -3,7 +3,7 @@ import os
 import pickle
 
 from PIL import Image
-from flask import Blueprint, request, render_template
+from flask import Blueprint, request, render_template,url_for, redirect
 
 from app.image_services.feature_extractor import FeatureExtractorVGG16
 from app.image_services.image_classification import ImageClassificationVGG19
@@ -85,10 +85,11 @@ def search_by_img():
         img.save(uploaded_img_path)
         img_upload = "/static_img/uploaded/" + filename
 
+        print(img_upload)
         img_serach = ImageSearchVGG16(fe)
         scores = img_serach.search(img)
         return render_template('search.html',
-                               query_path=img_upload,
+                               img_upload=img_upload,
                                scores=scores)
     else:
         return render_template('search.html')
