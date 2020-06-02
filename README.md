@@ -8,7 +8,7 @@ This README would normally document whatever steps are necessary to get your app
 
 Install dependencies
 ```
-pip install -r requirements/development.txt
+pip install -r requirements.txt
 ```
 Download dependencies
 
