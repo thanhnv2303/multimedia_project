@@ -12,4 +12,4 @@ if not elastic_search.indices.exists(index=ElasticSearchConfig.INDEX_IMAGE):
     elastic_search.indices.create(index=ElasticSearchConfig.INDEX_IMAGE)
 
 if __name__ == "__main__":
-    app.run(host=Config.HOST, port=Config.PORT)
+    app.run(host=Config.HOST, port=Config.PORT,threaded=False)

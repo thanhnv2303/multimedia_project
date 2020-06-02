@@ -114,7 +114,7 @@ def fulltext_search(text):
         print("have no image")
 
 
-print(fulltext_search('good'))
+# print(fulltext_search('good'))
 # es.indices.delete(index=ElasticSearchConfig.INDEX_IMAGE, ignore=[400, 404])
 # example:
 

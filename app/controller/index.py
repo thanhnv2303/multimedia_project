@@ -10,6 +10,9 @@ from app.image_services.image_classification import ImageClassificationVGG19
 from app.image_services.image_description import ImageDescription
 from app.image_services.image_search import ImageSearchVGG16
 
+from app.utils.model import CNNModel
+from app.configuration.config import config
+
 from app.database_services.image_db import *
 
 index_api = Blueprint('index_api', __name__,
@@ -18,6 +21,7 @@ index_api = Blueprint('index_api', __name__,
                       static_url_path='/static_img'
                       )
 fe = FeatureExtractorVGG16()
+cnn_model = CNNModel(config['model_type'])
 img_classification = ImageClassificationVGG19()
 img_description = ImageDescription()
 
@@ -57,12 +61,9 @@ def upload_img():
         img.save(uploaded_img_path)
 
         label = img_classification.predict(img)
-
-        description = img_description.descript(img)
-
         print(label)
+        description = img_description.descript(img)
         print(description)
-
         save_img(filename, label, description)
 
         feature = fe.extract(img)
@@ -85,7 +86,6 @@ def search_by_img():
         img.save(uploaded_img_path)
         img_upload = "/static_img/uploaded/" + filename
 
-        print(img_upload)
         img_serach = ImageSearchVGG16(fe)
         scores = img_serach.search(img)
         return render_template('search.html',

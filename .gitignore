@@ -4,3 +4,4 @@ app/static/features/VGG16/*
 app/static/features/images/*.jpg
 app/static/features/uploaded/*.jpg
 app/static/
+app/model_data/*
