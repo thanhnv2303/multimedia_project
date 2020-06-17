@@ -110,7 +110,7 @@ def search_by_text():
         for img in imgs:
             img['name'] = '/static_img/images/' + img['name']
         return render_template('search_text.html',
-                               images=imgs)
+                               images=imgs, text= text)
     else:
         return render_template('search_text.html')
 
