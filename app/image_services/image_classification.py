@@ -38,7 +38,7 @@ class ImageClassificationVGG19:
         for (i, (imagenetID, label, prob)) in enumerate(P[0]):
             print("{}. {}: {:.2f}%".format(i + 1, label, prob * 100))
         (imagenetID, label, prob) = P[0][0]
-        if prob < 0.6:
+        if prob < 0.5:
             label = 'general'
         return label
 

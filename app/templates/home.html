@@ -80,7 +80,7 @@ body {
     {% for i in images %}
     <figure style="float: left; margin-right: 20px; margin-bottom: 20px;">
         <img src="{{ i[0] }}" height="200px">
-        <figcaption>description:{{ i[1] }}</figcaption>
+        <figcaption>{{ i[1] }}</figcaption>
     </figure>
     {% endfor %}
     {% else %}

@@ -2,6 +2,10 @@
 <html>
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link class="jsbin" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css"
+          rel="stylesheet" type="text/css"/>
+    <script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
     <style>
 * {box-sizing: border-box;}
 
@@ -58,6 +62,9 @@ body {
   }
 }
 
+article, aside, figure, footer, header, hgroup,
+  menu, nav, section { display: block; }
+
     </style>
 </head>
 <body>
@@ -71,20 +78,44 @@ body {
         <a href="{{ url_for('index_api.search_by_text') }}">Search by text</a>
     </div>
 </div>
-        <div class="container">
-<!--            <img src="/static/img/images/100000.jpg" width="300px">-->
-            <h1>Upload image</h1>
-            <form method="POST" enctype="multipart/form-data">
-                <input type="file" name="query_img"><br>
-                <input type="submit">
-            </form>
+<div class="container">
+    <!--            <img src="/static/img/images/100000.jpg" width="300px">-->
+    <h1>Upload image</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="query_img" onchange="readURL(this);"><br>
+        <img id="blah" src="" alt=" your image" class="imagen" /> <br>
+        <input type="text"  name="caption" placeholder="enter caption here or we will auto generate" style="width:500px" class="imagen"> <br>
+        <input type="submit">
+    </form>
 
-            {% if upload_path %}
-            <h2>Uploaded:</h2>
-            <img src="{{ upload_path }}" width="300px">
-            {% endif %}
-        </div>
-    </body>
+    {% if upload_path %}
+    <h2>Uploaded:</h2>
+    <img src="{{ upload_path }}" width="300px">
+    <figcaption>{{ description }}</figcaption>
+    {% endif %}
+</div>
+<script>
+ $(document).ready(function(){
+        $('.imagen').hide();
+    });
+
+     function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#blah')
+                        .attr('src', e.target.result)
+                        .width(150)
+                        .height(200);
+                     $('.imagen').show();
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+</script>
+</body>
 </html>
 
 

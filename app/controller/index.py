@@ -3,7 +3,8 @@ import os
 import pickle
 
 from PIL import Image
-from flask import Blueprint, request, render_template,url_for, redirect
+from flask import Blueprint, request, render_template, url_for, redirect
+from flask import jsonify
 
 from app.image_services.feature_extractor import FeatureExtractorVGG16
 from app.image_services.image_classification import ImageClassificationVGG19
@@ -55,15 +56,20 @@ def album():
 def upload_img():
     if request.method == 'POST':
         file = request.files['query_img']
+        caption = request.form['caption']
+        print("cap:",caption)
         filename = file.filename
         img = Image.open(file.stream)  # PIL image
         uploaded_img_path = "app/static/images/" + filename
         img.save(uploaded_img_path)
 
         label = img_classification.predict(img)
-        print(label)
-        description = img_description.descript(img)
-        print(description)
+        # print(label)
+        if caption:
+            description = caption
+        else:
+            description = img_description.descript(img)
+        # print(description)
         save_img(filename, label, description)
 
         feature = fe.extract(img)
@@ -71,7 +77,7 @@ def upload_img():
         feature_path = 'app/static/features/VGG16/' + os.path.splitext(os.path.basename(img_path))[0] + '.pkl'
         pickle.dump(feature, open(feature_path, 'wb'))
         upload_path = "/static_img/images/" + filename
-        return render_template('upload.html', upload_path=upload_path)
+        return render_template('upload.html', upload_path=upload_path, description=description)
     else:
         return render_template('upload.html')
 
@@ -107,3 +113,16 @@ def search_by_text():
                                images=imgs)
     else:
         return render_template('search_text.html')
+
+
+@index_api.route("/test", methods=['GET', 'POST'])
+def test():
+    if request.method == 'POST':
+        name = request.json['name']
+
+        return "hello" + name
+    else:
+        name = request.form['name']
+        print(name)
+        return jsonify(name ="hello" + name)
+
