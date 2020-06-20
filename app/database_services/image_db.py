@@ -1,6 +1,5 @@
-from elasticsearch import Elasticsearch, ConflictError, NotFoundError
-from elasticsearch_dsl import Search
-from elasticsearch_dsl import A
+from elasticsearch import Elasticsearch, NotFoundError
+from datetime import datetime
 
 from app.configuration.config import ElasticSearchConfig
 import uuid
@@ -13,7 +12,8 @@ def save_img(name, label, caption):
     img = {
         'name': name,
         'label': label,
-        'caption': caption
+        'caption': caption,
+        'upload': datetime.now()
     }
     try:
         res = es.index(index=ElasticSearchConfig.INDEX_IMAGE, id=uuid.uuid1(), body=img)
@@ -67,10 +67,15 @@ def get_image_by_label(label):
         print("images not found")
 
 
-def get_image():
+def get_image(size=1000, start=0):
     query = {
+        "size": size,  # default 10
+        "from": start,  # default0
+        "sort": {
+            ElasticSearchConfig.INDEX_IMAGE_UPLOAD: {"order": "desc"}
+        },
         "query": {
-            "match_all": {}
+            "match_all": {},
         }
     }
     try:
@@ -105,7 +110,7 @@ def fulltext_search(text):
     }
     try:
         res = es.search(index=ElasticSearchConfig.INDEX_IMAGE, body=query)
-        imgs=[]
+        imgs = []
         for img in res['hits']['hits']:
             imgs.append(img["_source"])
         return imgs
@@ -116,9 +121,27 @@ def fulltext_search(text):
 
 # print(fulltext_search('good'))
 # es.indices.delete(index=ElasticSearchConfig.INDEX_IMAGE, ignore=[400, 404])
+
+
 # example:
 
 # for i in get_label():
 #     print(i)
 # print(get_image_by_name('100000.jpg'))
 # print(get_image_by_label("general"))
+
+def enable_fielddata(field, type="text"):
+    body = {
+        "properties": {
+            field: {
+                "type": type,
+                "fielddata": True
+            }
+        }
+    }
+
+    es.indices.put_mapping(index=ElasticSearchConfig.INDEX_IMAGE, body=body)
+
+
+# enable_fielddata(ElasticSearchConfig.INDEX_IMAGE_NAME)
+
