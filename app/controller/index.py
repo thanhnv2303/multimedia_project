@@ -6,10 +6,10 @@ from PIL import Image
 from flask import Blueprint, request, render_template, url_for, redirect
 from flask import jsonify
 
-from app.image_services.feature_extractor import FeatureExtractorVGG16
+from app.image_services.feature_extractor import FeatureExtractorVGG16, FeatureExtractorVGG19
 from app.image_services.image_classification import ImageClassificationVGG19
 from app.image_services.image_description import ImageDescription
-from app.image_services.image_search import ImageSearchVGG16
+from app.image_services.image_search import ImageSearchVGG16, ImageSearchVGG19
 
 from app.utils.model import CNNModel
 from app.configuration.config import config
@@ -21,7 +21,7 @@ index_api = Blueprint('index_api', __name__,
                       static_folder='../static',
                       static_url_path='/static_img'
                       )
-fe = FeatureExtractorVGG16()
+fe = FeatureExtractorVGG19()
 cnn_model = CNNModel(config['model_type'])
 img_classification = ImageClassificationVGG19()
 img_description = ImageDescription()
@@ -74,7 +74,7 @@ def upload_img():
 
         feature = fe.extract(img)
         img_path = 'app/static/images/' + filename
-        feature_path = 'app/static/features/VGG16/' + os.path.splitext(os.path.basename(img_path))[0] + '.pkl'
+        feature_path = 'app/static/features/VGG19/' + os.path.splitext(os.path.basename(img_path))[0] + '.pkl'
         pickle.dump(feature, open(feature_path, 'wb'))
         upload_path = "/static_img/images/" + filename
         return render_template('upload.html', upload_path=upload_path, description=description)
@@ -92,7 +92,7 @@ def search_by_img():
         img.save(uploaded_img_path)
         img_upload = "/static_img/uploaded/" + filename
 
-        img_serach = ImageSearchVGG16(fe)
+        img_serach = ImageSearchVGG19(fe)
         scores = img_serach.search(img)
         return render_template('search.html',
                                img_upload=img_upload,
