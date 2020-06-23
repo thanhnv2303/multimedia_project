@@ -1,7 +1,7 @@
 .idea
 venv
-app/static/features/VGG16/*
+app/static/images/*.jpg
 app/static/features/images/*.jpg
-app/static/features/uploaded/*.jpg
+app/static/uploaded/*.jpg
 app/static/features/VGG19/*.pkl
 app/model_data/*
